@@ -676,7 +676,7 @@ const ec=(n,dep=0)=>{const W=PR[n.id][0],S=1+.1*n.st,Am=(1+.04*n.at)*(n.rk||1),e
  if(dep<2)for(const m of Object.values(N))if(m.ov==n.id&&m.sk=='v')r.push(['Tribute from '+m.nm,ec(m,dep+1).gross*.2]);const g0=r.reduce((a,b)=>a+b[1],0);if(Object.keys(n.w).length&&q[1]<.5)r.push(['Estates’ war grants',g0*(.5-q[1])*.5]);
  const gross=r.reduce((a,b)=>a+b[1],0),k=1+n.inf,uf=Math.min(1,Math.max(.1,(UF[n.id]??.5)*ufS(q[0])/ufS(n.s0[0]))),
  x=[['Army upkeep',t*.35*uf*(1-.02*n.t)*k*gm],['Court & administration',B*.06*CR[n.cr]*k*(n.rk||1)*cmf(q,ch)/cmf(n.s0,ch)*ga*(1-.015*n.at)],['Scholars, shipyards & workshops',gross*[0,.08,.15,.25][n.rb]],['Debt interest',n.debt*.007*(1.2-.4*q[1])*(1.1-.2*q[5])*(1-.03*n.te)],['Tribute to overlord',n.ov&&n.sk=='v'?gross*.2:0],];
- return{d,t,c,R:r,X:x,gross,lim:Math.max(120,gross*24)*(1+.1*n.at)*(n.bk?1.5:1)*(.8+.5*q[1])*(.9+.2*q[5]),i:(gross-x.reduce((a,b)=>a+b[1],0))*((()=>{let d='normal';try{d=localStorage.getItem('imp_diff')||'normal'}catch(e){}const pm=d=='easy'?1.12:d=='hard'?.88:1,am=d=='easy'?.88:d=='hard'?1.12:1;return n==me?pm:am})())}},str=n=>ec(n).t*(1+.05*n.t+ab(n));
+ return{d,t,c,R:r,X:x,g:n.g,gross,lim:Math.max(120,gross*24)*(1+.1*n.at)*(n.bk?1.5:1)*(.8+.5*q[1])*(.9+.2*q[5]),i:(gross-x.reduce((a,b)=>a+b[1],0))*((()=>{let d='normal';try{d=localStorage.getItem('imp_diff')||'normal'}catch(e){}const pm=d=='easy'?1.12:d=='hard'?.88:1,am=d=='easy'?.88:d=='hard'?1.12:1;return n==me?pm:am})())}},str=n=>ec(n).t*(1+.05*n.t+ab(n));
 const bc=(p,k)=>Math.ceil(k=='fo'?20+8*p.d:k=='wt'?3+p.d:k=='dv'?12+24*p.d:k=='mn'?8+6*p.d:4+3*p.d),ig=(p,k,n)=>{n=n||me;const W=PR[n.id][0],x=p.d*.9*(n.rk||1)*(1+.04*n.at)*(1+.1*n.st);return k=='mk'?x*W[1]*TF[n.tf]*(1+n.ti)*(.9+.2*n.sl[1])*(.95+.1*n.sl[5]):k=='fm'?x*W[0]*LT[n.lt]*(.8+.5*n.sl[1])*(1+.1*n.sl[2])*(.9+.2*n.sl[5]):k=='mn'?x*W[2]:.25*x*(W[0]*LT[n.lt]+W[1]*TF[n.tf]*(1+n.ti)+W[2]+W[3]+W[4])};
 // rough 1492 state revenue (gold per month; 1 = about 50k ducats a year) and share of army paid in coin (rest are feudal, timar or tribal levies)
 const TG={CA:18,AR:10,PT:7,GR:2,FR:30,EN:8,SC:1.5,HR:18,PL:6,LT:4,MU:6,HU:16,OT:60,VE:20,PA:6,NA:8,MI:12,DK:3,SW:2,MD:2,GH:3,CR:2,MM:30,AQ:12,TM:8,MG:250,MN:1,JP:8,KO:6,DV:8,AY:6,ML:4,DL:28,BA:8,VJ:18,SO:6,MO:3,HF:4,ET:3,KG:1,AZ:8,IN:10},
@@ -1533,8 +1533,7 @@ const E=[[0,'2 Jan 1492: Boabdil surrenders Granada to Isabella and Ferdinand',(
 function tickDiseases(){for(const n of Object.values(N)){if(!AL.has(n.id))continue;const d=n.dis?DIS[n.dis]:null;if(!d)continue;if(Y<d.beg||Y>d.end)continue;if(!n.disT){if(Math.random()<d.outCh){n.dis=d.id;n.disT=d.durMin+rnd(d.durExtra)}if(!n.disT)continue}
  n.disT--;const e=ec(n);n.g-=e.gross*d.exp;n.mp*=1-d.death*(1+(n.t/8));n.st-=0.02;if(n==me)T('Disease: '+d.nm+' spreads through '+n.nm)}}
 
-function checkVictory(){const live=Object.values(N).filter(n=>AL.has(n.id)&&n!=me),holyCtrl=HOLY.filter(i=>P[i].o==me.id).length,holyTot=HOLY.length;
- if(holyCtrl>=holyTot)return'religious';
+function checkVictory(){const live=Object.values(N).filter(n=>AL.has(n.id)&&n!=me);
  if(!live.length)return'military';
  const sc=ec(me).g+(ec(me).t*0)+(ec(me).gross||0);let best=null,bestV=-1;for(const n of Object.values(N)){if(n==me||!AL.has(n.id))continue;const e=ec(n);if(e.g>bestV){bestV=e.g;best=n.id}}
  if(sc>=bestV+10)return'score';
